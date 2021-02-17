@@ -14,7 +14,7 @@
 		6533810225DBB4C2002A8E3C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6533810125DBB4C2002A8E3C /* Assets.xcassets */; };
 		6533810525DBB4C2002A8E3C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6533810325DBB4C2002A8E3C /* LaunchScreen.storyboard */; };
 		6533810825DBB4C2002A8E3C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6533810725DBB4C2002A8E3C /* main.m */; };
-		65BC522225DD37520018B7E2 /* CPXResearch in Frameworks */ = {isa = PBXBuildFile; productRef = 65BC522125DD37520018B7E2 /* CPXResearch */; };
+		65BC522825DD389A0018B7E2 /* CPXResearch in Frameworks */ = {isa = PBXBuildFile; productRef = 65BC522725DD389A0018B7E2 /* CPXResearch */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,7 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				65BC522225DD37520018B7E2 /* CPXResearch in Frameworks */,
+				65BC522825DD389A0018B7E2 /* CPXResearch in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,7 +95,7 @@
 			);
 			name = TestProject;
 			packageProductDependencies = (
-				65BC522125DD37520018B7E2 /* CPXResearch */,
+				65BC522725DD389A0018B7E2 /* CPXResearch */,
 			);
 			productName = TestProject;
 			productReference = 653380F225DBB4C0002A8E3C /* TestProject.app */;
@@ -124,7 +124,7 @@
 			);
 			mainGroup = 653380E925DBB4C0002A8E3C;
 			packageReferences = (
-				65BC522025DD37520018B7E2 /* XCRemoteSwiftPackageReference "CPXResearch" */,
+				65BC522625DD389A0018B7E2 /* XCRemoteSwiftPackageReference "cpx-research-SDK-Ios" */,
 			);
 			productRefGroup = 653380F325DBB4C0002A8E3C /* Products */;
 			projectDirPath = "";
@@ -356,20 +356,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		65BC522025DD37520018B7E2 /* XCRemoteSwiftPackageReference "CPXResearch" */ = {
+		65BC522625DD389A0018B7E2 /* XCRemoteSwiftPackageReference "cpx-research-SDK-Ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "file:///Users/daniel/Documents/Developing/Xcode/CPXResearch";
+			repositoryURL = "git@github.com:MakeOpinionGmbH/cpx-research-SDK-Ios.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.0.213;
+				minimumVersion = 0.9.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		65BC522125DD37520018B7E2 /* CPXResearch */ = {
+		65BC522725DD389A0018B7E2 /* CPXResearch */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 65BC522025DD37520018B7E2 /* XCRemoteSwiftPackageReference "CPXResearch" */;
+			package = 65BC522625DD389A0018B7E2 /* XCRemoteSwiftPackageReference "cpx-research-SDK-Ios" */;
 			productName = CPXResearch;
 		};
 /* End XCSwiftPackageProductDependency section */

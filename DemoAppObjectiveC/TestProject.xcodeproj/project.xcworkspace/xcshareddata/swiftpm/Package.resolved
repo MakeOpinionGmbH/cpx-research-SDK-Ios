@@ -3,11 +3,11 @@
     "pins": [
       {
         "package": "CPXResearch",
-        "repositoryURL": "/Users/daniel/Documents/Developing/Xcode/CPXResearch",
+        "repositoryURL": "git@github.com:MakeOpinionGmbH/cpx-research-SDK-Ios.git",
         "state": {
           "branch": null,
-          "revision": "f4fd5e3dde494e42201dbfb77b25d85631d24392",
-          "version": "0.0.213"
+          "revision": "dbdc03e3cb29206604fc8106a38932a9c2deecc7",
+          "version": "0.9.0"
         }
       },
       {
