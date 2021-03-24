@@ -29,7 +29,7 @@ public struct SurveyTextItem: Codable {
     enum CodingKeys: String, CodingKey {
         case isHtml = "is_html"
         case currencyNamePlural = "currency_name_plural"
-        case currencyNameSingluar = "currency_name_singular"
+        case currencyNameSingular = "currency_name_singular"
         case shortcurtMin = "shortcurt_min"
         case headlineGeneral = "headline_general"
         case headline1Element1 = "headline_1_element_1"
@@ -45,7 +45,7 @@ public struct SurveyTextItem: Codable {
 
     public let isHtml: Bool?
     public let currencyNamePlural: String
-    public let currencyNameSingluar: String
+    public let currencyNameSingular: String
     public let shortcurtMin: String
     public let headlineGeneral: String
     public let headline1Element1: String
@@ -69,7 +69,7 @@ public final class SurveyItem: NSObject, Codable, Identifiable {
         case conversionRate = "conversion_rate"
         case statisticsRatingCount = "statistics_rating_count"
         case isTestSurvey = "istestsurvey"
-        case statisticsRaingAvg = "statistics_rating_avg"
+        case statisticsRatingAvg = "statistics_rating_avg"
         case type
         case top
         case details
@@ -84,7 +84,7 @@ public final class SurveyItem: NSObject, Codable, Identifiable {
     @objc public let conversionRate: String
     public let isTestSurvey: Int?
     @objc public let statisticsRatingCount: Int
-    @objc public let statisticsRaingAvg: Int
+    @objc public let statisticsRatingAvg: Int
     @objc public let type: String
     @objc public let top: Int
     public let details: Int?
@@ -98,7 +98,7 @@ public final class SurveyItem: NSObject, Codable, Identifiable {
             lhs.conversionRate == rhs.conversionRate &&
             lhs.isTestSurvey == lhs.isTestSurvey &&
             lhs.statisticsRatingCount == rhs.statisticsRatingCount &&
-            lhs.statisticsRaingAvg == rhs.statisticsRaingAvg &&
+            lhs.statisticsRatingAvg == rhs.statisticsRatingAvg &&
             lhs.type == rhs.type &&
             lhs.top == rhs.top &&
             lhs.details == rhs.details &&

@@ -187,7 +187,7 @@ final public class CPXResearch: NSObject {
             URLQueryItem(name: Const.transactionMode, value: "full"),
             URLQueryItem(name: Const.setTransactionPaid, value: String(true)),
             URLQueryItem(name: Const.messageId, value: messageId),
-            URLQueryItem(name: Const.secureHash, value: CPXHash.md5(string: "\(config.extUserId)-\(config.secureKey)"))
+            URLQueryItem(name: Const.secureHash, value: CPXHash.md5(string: "\(config.extUserId)-\(config.secureHash)"))
         ]
 
         api.requestSurveysFromApi(config,

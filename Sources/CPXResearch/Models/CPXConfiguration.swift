@@ -152,7 +152,7 @@ public struct CPXConfiguration {
 
     let appId: String
     let extUserId: String
-    let secureKey: String
+    let secureHash: String
     var style: CPXStyleConfiguration
 
     let email: String?
@@ -198,7 +198,7 @@ public struct CPXConfiguration {
     /// - Parameters:
     ///   - appId: The app id. Should be provided by CPX Research.
     ///   - extUserId: The ext user id.
-    ///   - secureKey: A secure key for hashes. Should be provided by CPX Research.
+    ///   - secureHash: A secure hash. Should be provided by CPX Research.
     ///   - email: An optional email address that is sent with each request to have contact information for support questions.
     ///   - subId1: An optional sub id 1 parameter that will be send with each request (if set).
     ///   - subId2: An optional sub id 2 parameter that will be send with each request (if set).
@@ -206,7 +206,7 @@ public struct CPXConfiguration {
     ///   - style: The style configuration.
     public init(appId: String,
                 extUserId: String,
-                secureKey: String,
+                secureHash: String,
                 email: String? = nil,
                 subId1: String? = nil,
                 subId2: String? = nil,
@@ -214,7 +214,7 @@ public struct CPXConfiguration {
                 style: CPXStyleConfiguration) {
         self.appId = appId
         self.extUserId = extUserId
-        self.secureKey = secureKey
+        self.secureHash = secureHash
         self.style = style
         self.email = email
         self.subid1 = subId1
