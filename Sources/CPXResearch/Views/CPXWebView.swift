@@ -55,7 +55,7 @@ final class CPXWebView: WKWebView {
               body: Data? = nil) {
         let bg = UIView()
         bg.translatesAutoresizingMaskIntoConstraints = false
-        bg.backgroundColor = .black.withAlphaComponent(0.75)
+        bg.backgroundColor = UIColor.black.withAlphaComponent(0.75)
         bg.isOpaque = false
 
         let vc = UIViewController()
