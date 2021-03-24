@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let config = CPXConfiguration(appId: "",
                                       extUserId: "",
-                                      secureKey: "",
+                                      secureHash: "",
                                       style: style)
         CPXResearch.setup(with: config)
 

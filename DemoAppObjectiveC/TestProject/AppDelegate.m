@@ -28,7 +28,7 @@
     CPXLegacyConfiguration* config =
     [[CPXLegacyConfiguration alloc] initWithAppId:@""
                                         extUserId:@""
-                                        secureKey:@""
+                                       secureHash:@""
                                             email:nil
                                            subId1:nil
                                            subId2:nil

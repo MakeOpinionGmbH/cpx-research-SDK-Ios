@@ -26,7 +26,7 @@ class SurveyTableViewCell: UITableViewCell {
     func setup(with item: SurveyItem) {
         labelTitle?.text = "ID: \(item.id)"
         labelSubtitle?.text = "\(item.payout)"
-        labelStats?.text = "\(item.statisticsRaingAvg) stars by \(item.statisticsRatingCount) ratings"
+        labelStats?.text = "\(item.statisticsRatingAvg) stars by \(item.statisticsRatingCount) ratings"
         labelContent?.text = """
             Loi: \(item.loi)
             ConversionRate: \(item.conversionRate)
