@@ -38,4 +38,7 @@ enum Const {
     static let transparent = "transparent"
     static let text = "text"
     static let textSize = "textsize"
+
+    static let sdk = "sdk"
+    static let sdkVersion = "sdk_version"
 }
