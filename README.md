@@ -36,6 +36,8 @@ This SDK is owned by [MakeOpinion GmbH](http://www.makeopinion.com).
 Enter the following code early in your App's life cycle, for example in the AppDelegate.
 
 ```swift
+import CPXResearch
+
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
     let style = CPXConfiguration.CPXStyleConfiguration(
@@ -47,7 +49,7 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 
     let config = CPXConfiguration(appId: "<Your app id>",
                                     extUserId: "<Your external user id>",
-                                    secureKey: "<Your secure key>",
+                                    secureHash: "<Your secure key>",
                                     style: style)
 
     CPXResearch.setup(with: config)
@@ -61,6 +63,8 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 In your ViewController activate the automatic banner display and set the delegate to handle CPX Research events. [Show delegate information.](#implement-the-delegate-callbacks-swift)
 
 ```swift
+import CPXResearch
+
 override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -74,6 +78,8 @@ override func viewDidLoad() {
 In your ViewController set the delegate to handle CPX Research events. [Show delegate information.](#implement-the-delegate-callbacks-swift)
 
 ```swift
+import CPXResearch
+
 override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -103,6 +109,8 @@ Mark a transaction as paid
 ## Implement the delegate callbacks swift
 
 ```swift
+import CPXResearch
+
 extension ViewController: CPXResearchDelegate {
     func onSurveysUpdated(new: [SurveyItem],
                           updated: [SurveyItem],
@@ -131,6 +139,8 @@ extension ViewController: CPXResearchDelegate {
 Enter the following code early in your App's life cycle, for example in the AppDelegate.
 
 ```objc
+@import CPXResearch;
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     CPXLegacyStyleConfiguration* style =
     [[CPXLegacyStyleConfiguration alloc] initWithPosition:LegacySurveyPositionCornerTopRight
@@ -143,7 +153,7 @@ Enter the following code early in your App's life cycle, for example in the AppD
     CPXLegacyConfiguration* config =
     [[CPXLegacyConfiguration alloc] initWithAppId:@"<Your app id>"
                                         extUserId:@"<Your external user id>"
-                                        secureKey:@"<Your secure key>"
+                                        secureHash:@"<Your secure key>"
                                             email:nil
                                            subId1:nil
                                            subId2:nil
@@ -160,6 +170,8 @@ Enter the following code early in your App's life cycle, for example in the AppD
 In your ViewController activate the automatic banner display and set the delegate to handle CPX Research events. [Show delegate information.](#implement-the-delegate-callbacks-objc)
 
 ```objc
+@import CPXResearch;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     CPXResearch.shared.delegate = self;
@@ -172,6 +184,8 @@ In your ViewController activate the automatic banner display and set the delegat
 In your ViewController set the delegate to handle CPX Research events. [Show delegate information.](#implement-the-delegate-callbacks-objc)
 
 ```objc
+@import CPXResearch;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     CPXResearch.shared.delegate = self;
@@ -199,6 +213,8 @@ Mark a transaction as paid
 ## Implement the delegate callbacks objc
 
 ```objc
+@import CPXResearch;
+
 @interface ViewController () <CPXResearchDelegate>
 
 @end

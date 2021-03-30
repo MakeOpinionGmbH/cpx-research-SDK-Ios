@@ -20,7 +20,7 @@ struct SurveyModel: Codable {
     let status: String
     let availableSurveysCount: Int
     let returnedSurveysCount: Int
-    let transactions: [TransactionModel]
+    let transactions: [TransactionModel]?
     let surveys: [SurveyItem]
     let text: SurveyTextItem
 }

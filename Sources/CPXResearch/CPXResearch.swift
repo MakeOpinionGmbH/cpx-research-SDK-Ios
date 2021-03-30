@@ -186,8 +186,7 @@ final public class CPXResearch: NSObject {
         let items = [
             URLQueryItem(name: Const.transactionMode, value: "full"),
             URLQueryItem(name: Const.setTransactionPaid, value: String(true)),
-            URLQueryItem(name: Const.messageId, value: messageId),
-            URLQueryItem(name: Const.secureHash, value: CPXHash.md5(string: "\(config.extUserId)-\(config.secureHash)"))
+            URLQueryItem(name: Const.messageId, value: messageId)
         ]
 
         api.requestSurveysFromApi(config,
@@ -265,8 +264,9 @@ final public class CPXResearch: NSObject {
                                                 removed: removed)
             }
 
-            if !model.transactions.isEmpty {
-                self.unpaidTransactions = model.transactions
+            if let transactions = model.transactions,
+               !transactions.isEmpty {
+                self.unpaidTransactions = transactions
                 DispatchQueue.main.async {
                     self.delegate?.onTransactionsUpdated(unpaidTransactions: self.unpaidTransactions)
                 }
