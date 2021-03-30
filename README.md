@@ -42,6 +42,15 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 
     let style = CPXConfiguration.CPXStyleConfiguration(
         position: .side(position: .right, size: .normal),
+        //position: .side(position: .left, size: .normal),
+        //position: .side(position: .right, size: .small),
+        //position: .side(position: .left, size: .small),
+        //position: .corner(position: .topLeft),
+        //position: .corner(position: .topRight),
+        //position: .corner(position: .bottomRight),
+        //position: .corner(position: .bottomLeft),
+        //position: .screen(position: .centerTop),
+        //position: .screen(position: .centerBottom),
         text: "Earn up to 3 Coins in<br> 4 minutes with surveys",
         textColor: "#ffffff",
         backgroundColor: "#ffaf20",
