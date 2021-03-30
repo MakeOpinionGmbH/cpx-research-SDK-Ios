@@ -42,14 +42,14 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 
     let style = CPXConfiguration.CPXStyleConfiguration(
         position: .side(position: .right, size: .normal),
-        text: "Verdiene bis zu 3 Coins in<br> 4 Minuten mit Umfragen",
+        text: "Earn up to 3 Coins in<br> 4 minutes with surveys",
         textColor: "#ffffff",
         backgroundColor: "#ffaf20",
         roundedCorners: true)
 
     let config = CPXConfiguration(appId: "<Your app id>",
                                     extUserId: "<Your external user id>",
-                                    secureHash: "<Your secure key>",
+                                    secureHash: "<Your secure hash>",
                                     style: style)
 
     CPXResearch.setup(with: config)
@@ -144,7 +144,7 @@ Enter the following code early in your App's life cycle, for example in the AppD
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     CPXLegacyStyleConfiguration* style =
     [[CPXLegacyStyleConfiguration alloc] initWithPosition:LegacySurveyPositionCornerTopRight
-                                                     text:@"Verdiene bis zu 3 Coins in<br> 4 Minuten mit Umfragen"
+                                                     text:@"Earn up to 3 Coins in<br> 4 minutes with surveys"
                                                  textSize:20
                                                 textColor:@"#ffffff"
                                           backgroundColor:@"#ffaf20"
@@ -153,7 +153,7 @@ Enter the following code early in your App's life cycle, for example in the AppD
     CPXLegacyConfiguration* config =
     [[CPXLegacyConfiguration alloc] initWithAppId:@"<Your app id>"
                                         extUserId:@"<Your external user id>"
-                                        secureHash:@"<Your secure key>"
+                                        secureHash:@"<Your secure hash>"
                                             email:nil
                                            subId1:nil
                                            subId2:nil
