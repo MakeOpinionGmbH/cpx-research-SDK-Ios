@@ -1,6 +1,6 @@
 //
 //  CPXWebView.swift
-//  
+//
 //
 //  Created by Daniel Fredrich on 08.02.21.
 //
@@ -31,7 +31,9 @@ final class CPXWebView: WKWebView {
     private var supportSession = SupportModel(urls: [String]())
 
     private weak var viewController: UIViewController?
-
+    private var observation: NSKeyValueObservation? = nil
+    private weak var progressView: UIProgressView?
+    
     init(frame: CGRect,
          configuration: WKWebViewConfiguration = WKWebViewConfiguration(),
          delegate: (WKNavigationDelegate & CPXWebViewDelegate)) {
@@ -39,6 +41,17 @@ final class CPXWebView: WKWebView {
                    configuration: configuration)
         self.delegate = delegate
         updateView()
+        
+        observation = observe(\.estimatedProgress, options: [.new]) { [weak self] _, _ in
+            guard let self = self else { return }
+            let progress = Float(self.estimatedProgress)
+            self.progressView?.isHidden = progress == 1.0
+            self.progressView?.progress = Float(self.estimatedProgress)                       
+        }
+    }
+    
+    deinit {
+        observation = nil
     }
 
     private override init(frame: CGRect, configuration: WKWebViewConfiguration) {
@@ -52,6 +65,7 @@ final class CPXWebView: WKWebView {
     func open(on viewController: UIViewController,
               for url: URL,
               buttons: [ButtonType],
+              progressColor: UIColor,
               body: Data? = nil) {
         let bg = UIView()
         bg.translatesAutoresizingMaskIntoConstraints = false
@@ -90,7 +104,20 @@ final class CPXWebView: WKWebView {
         menu.addArrangedSubview(UIView())
 
         container.addArrangedSubview(menu)
-        container.addArrangedSubview(self)
+        
+        let webContainer = UIStackView()
+        webContainer.translatesAutoresizingMaskIntoConstraints = false
+        webContainer.axis = .vertical
+        
+        let progress = UIProgressView()
+        progress.translatesAutoresizingMaskIntoConstraints = false
+        progress.progressTintColor = progressColor
+        progressView = progress
+        
+        webContainer.addArrangedSubview(progress)
+        webContainer.addArrangedSubview(self)
+        
+        container.addArrangedSubview(webContainer)
 
         vc.view.addSubview(bg)
         bg.topAnchor.constraint(equalTo: vc.view.topAnchor).isActive = true

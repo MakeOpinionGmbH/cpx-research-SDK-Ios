@@ -68,7 +68,6 @@ public final class SurveyItem: NSObject, Codable, Identifiable {
         case payout
         case conversionRate = "conversion_rate"
         case statisticsRatingCount = "statistics_rating_count"
-        case isTestSurvey = "istestsurvey"
         case statisticsRatingAvg = "statistics_rating_avg"
         case type
         case top
@@ -82,7 +81,6 @@ public final class SurveyItem: NSObject, Codable, Identifiable {
     @objc public let loi: Int
     @objc public let payout: String
     @objc public let conversionRate: String
-    public let isTestSurvey: Int?
     @objc public let statisticsRatingCount: Int
     @objc public let statisticsRatingAvg: Int
     @objc public let type: String
@@ -96,7 +94,6 @@ public final class SurveyItem: NSObject, Codable, Identifiable {
             lhs.loi == rhs.loi &&
             lhs.payout == rhs.payout &&
             lhs.conversionRate == rhs.conversionRate &&
-            lhs.isTestSurvey == lhs.isTestSurvey &&
             lhs.statisticsRatingCount == rhs.statisticsRatingCount &&
             lhs.statisticsRatingAvg == rhs.statisticsRatingAvg &&
             lhs.type == rhs.type &&

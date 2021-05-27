@@ -131,14 +131,17 @@ final public class CPXResearch: NSObject {
     @objc
     public func openSurveyList(on viewController: UIViewController) {
         guard let config = CPXResearch.configuration,
-              let url = api.surveyUrl(config) else { return }
+              let url = api.surveyUrl(config),
+              let color = UIColor(hex: config.style.backgroundColor)
+        else { return }
 
         webView = CPXWebView(frame: .zero,
                             delegate: self)
         webViewController = viewController
         webView?.open(on: viewController,
                       for: url,
-                      buttons: [.close, .settings, .help])
+                      buttons: [.close, .settings, .help],
+                      progressColor: color)
         delegate?.onSurveysDidOpen()
     }
 
@@ -149,14 +152,17 @@ final public class CPXResearch: NSObject {
     @objc
     public func openSurvey(by id: String, on viewController: UIViewController) {
         guard let config = CPXResearch.configuration,
-              let url = api.surveyUrl(config, showSurvey: id) else { return }
+              let url = api.surveyUrl(config, showSurvey: id),
+              let color = UIColor(hex: config.style.backgroundColor)
+        else { return }
 
         webView = CPXWebView(frame: .zero,
                              delegate: self)
         webViewController = viewController
         webView?.open(on: viewController,
                       for: url,
-                      buttons: [.close, .settings, .help])
+                      buttons: [.close, .settings, .help],
+                      progressColor: color)
     }
 
     /// Shows the dialog in which the user can select for how long no surveys should be shown.
@@ -164,7 +170,8 @@ final public class CPXResearch: NSObject {
     @objc
     public func openHideSurveysDialog(on viewController: UIViewController) {
         guard let config = CPXResearch.configuration,
-              let url = api.hideDialogUrl(config)
+              let url = api.hideDialogUrl(config),
+              let color = UIColor(hex: config.style.backgroundColor)
         else { return }
 
         webView = CPXWebView(frame: .zero,
@@ -172,7 +179,8 @@ final public class CPXResearch: NSObject {
         webViewController = viewController
         webView?.open(on: viewController,
                       for: url,
-                      buttons: [.close])
+                      buttons: [.close],
+                      progressColor: color)
     }
 
     /// Tells CPX Research that a transaction has been paid to the user. This removes the transaction from the unpaid list.
@@ -313,7 +321,8 @@ extension CPXResearch: WKNavigationDelegate, CPXWebViewDelegate {
 
     func onHelpTapped(session: SupportModel) {
         guard let config = CPXResearch.configuration,
-              let url = api.helpSiteUrl(config)
+              let url = api.helpSiteUrl(config),
+              let color = UIColor(hex: config.style.backgroundColor)
         else { return }
 
         if let viewController = webViewController?.presentedViewController,
@@ -323,6 +332,7 @@ extension CPXResearch: WKNavigationDelegate, CPXWebViewDelegate {
             webView?.open(on: viewController,
                           for: url,
                           buttons: [.close],
+                          progressColor: color,
                           body: json)
         }
     }

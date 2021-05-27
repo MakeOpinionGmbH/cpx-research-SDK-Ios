@@ -53,4 +53,20 @@ public final class TransactionModel: NSObject, Codable, Identifiable {
     @objc public let isPaidToUser: String
     @objc public let isPaidToUserDateTime: String
     @objc public let IsPaidToUserType: String
+    
+    @objc public var earningPublisher: String {
+        verdienstPublisher
+    }
+    
+    @objc public var earningUser: String {
+        verdienstUserLocalMoney
+    }
+    
+    public var earningPublisherAsDouble: Double? {
+        Double(verdienstPublisher)
+    }
+    
+    public var earningUserAsDouble: Double? {
+        Double(verdienstUserLocalMoney)
+    }
 }
