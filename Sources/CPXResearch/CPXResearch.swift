@@ -140,7 +140,7 @@ final public class CPXResearch: NSObject {
         webViewController = viewController
         webView?.open(on: viewController,
                       for: url,
-                      buttons: [.close, .settings, .help],
+                      buttons: [.help, .settings, .home, .close],
                       progressColor: color)
         delegate?.onSurveysDidOpen()
     }
@@ -161,7 +161,7 @@ final public class CPXResearch: NSObject {
         webViewController = viewController
         webView?.open(on: viewController,
                       for: url,
-                      buttons: [.close, .settings, .help],
+                      buttons: [.help, .settings, .close],
                       progressColor: color)
     }
 

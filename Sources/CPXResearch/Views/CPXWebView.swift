@@ -25,8 +25,10 @@ final class CPXWebView: WKWebView {
         case help
         case info
         case settings
+        case home
     }
 
+    private var openedWithUrl: URL?
     private weak var delegate: (WKNavigationDelegate & CPXWebViewDelegate)?
     private var supportSession = SupportModel(urls: [String]())
 
@@ -77,14 +79,14 @@ final class CPXWebView: WKWebView {
         translatesAutoresizingMaskIntoConstraints = false
 
         let container = UIStackView()
-        container.axis = .horizontal
+        container.axis = .vertical
         container.translatesAutoresizingMaskIntoConstraints = false
 
         let menu = UIStackView()
         menu.translatesAutoresizingMaskIntoConstraints = false
-        menu.axis = .vertical
-        menu.alignment = .leading
+        menu.axis = .horizontal
 
+        menu.addArrangedSubview(UIView())
         buttons.forEach { type in
             switch type {
             case .close:
@@ -99,9 +101,11 @@ final class CPXWebView: WKWebView {
             case .settings:
                 let settingsIcon = createIcon(withImage: "icon_settings", iconBackground: .lightGray, tag: .settings)
                 menu.addArrangedSubview(settingsIcon)
+            case .home:
+                let homeIcon = createIcon(withImage: "icon_home", iconBackground: .lightGray, tag: .home)
+                menu.addArrangedSubview(homeIcon)
             }
-        }
-        menu.addArrangedSubview(UIView())
+        }        
 
         container.addArrangedSubview(menu)
         
@@ -127,12 +131,13 @@ final class CPXWebView: WKWebView {
 
         vc.view.addSubview(container)
         container.topAnchor.constraint(equalTo: vc.view.safeAreaLayoutGuide.topAnchor).isActive = true
-        container.bottomAnchor.constraint(equalTo: vc.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        container.bottomAnchor.constraint(equalTo: vc.view.bottomAnchor).isActive = true
         container.leadingAnchor.constraint(equalTo: vc.view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         container.trailingAnchor.constraint(equalTo: vc.view.safeAreaLayoutGuide.trailingAnchor).isActive = true
 
         viewController.present(vc, animated: true)
         self.viewController = vc
+        self.openedWithUrl = url
         var request = URLRequest(url: url)
         if let body = body {
             request.httpMethod = "POST"
@@ -201,6 +206,11 @@ final class CPXWebView: WKWebView {
             delegate?.onInfoTapped()
         case .settings:
             delegate?.onSettingsTapped()
+        case .home:
+            if let url = openedWithUrl {
+                let request = URLRequest(url: url)
+                load(request)
+            }
         }
     }
 }

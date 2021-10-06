@@ -26,7 +26,7 @@ let package = Package(
             name: "CPXResearch",
             dependencies: ["Gifu"],
             resources: [
-                .process("CPXResearch/Assets/Media.xcasset")
+                .process("Assets/Media.xcassets")
             ]),
         .testTarget(
             name: "CPXResearchTests",
