@@ -35,7 +35,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var labelSurveys: UILabel?
     @IBOutlet weak var tableView: UITableView?
     @IBOutlet weak var segControl: UISegmentedControl?
-
+    @IBOutlet weak var cvContainer: UIView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -47,6 +48,21 @@ class ViewController: UIViewController {
 
         tableView?.delegate = self
         tableView?.dataSource = self
+        
+        let cardConfiguration = CPXCardConfiguration(accentColor: UIColor(hex: "#41d7e5")!,
+                                                     backgroundColor: .white,
+                                                     inactiveStarColor: UIColor(hex: "#dfdfdf")!,
+                                                     starColor: UIColor(hex: "#ffc400")!,
+                                                     textColor: .label)
+        
+        if let cards = CPXResearch.shared.getCollectionView(configuration: cardConfiguration) {
+            cards.translatesAutoresizingMaskIntoConstraints = false
+            cvContainer.addSubview(cards)
+            cards.topAnchor.constraint(equalTo: cvContainer.topAnchor).isActive = true
+            cards.bottomAnchor.constraint(equalTo: cvContainer.bottomAnchor).isActive = true
+            cards.leadingAnchor.constraint(equalTo: cvContainer.leadingAnchor).isActive = true
+            cards.trailingAnchor.constraint(equalTo: cvContainer.trailingAnchor).isActive = true
+        }
     }
 
     @IBAction func onBtnTap(_ sender: Any) {

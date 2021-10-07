@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18121" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18091"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -24,7 +24,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Surveys: 0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uAJ-L6-XIS">
-                                <rect key="frame" x="309.5" y="44" width="88.5" height="23"/>
+                                <rect key="frame" x="309" y="44" width="89" height="23"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -54,20 +54,30 @@
                                 </connections>
                             </segmentedControl>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="cGh-hz-qdl">
-                                <rect key="frame" x="0.0" y="173" width="414" height="689"/>
+                                <rect key="frame" x="0.0" y="385" width="414" height="477"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vY2-fy-atB">
+                                <rect key="frame" x="0.0" y="173" width="414" height="196"/>
+                                <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="196" id="ggz-W6-1Pa"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="3nM-r1-L1X" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="vfD-S6-mkN" secondAttribute="trailing" constant="8" symbolic="YES" id="3CW-h8-pXn"/>
-                            <constraint firstItem="cGh-hz-qdl" firstAttribute="top" secondItem="5Fb-Qy-1PU" secondAttribute="bottom" constant="16" id="8jH-js-Kvs"/>
+                            <constraint firstItem="vY2-fy-atB" firstAttribute="top" secondItem="5Fb-Qy-1PU" secondAttribute="bottom" constant="16" id="5yf-VO-wK2"/>
+                            <constraint firstItem="cGh-hz-qdl" firstAttribute="top" secondItem="vY2-fy-atB" secondAttribute="bottom" constant="16" id="6Hn-mG-FqT"/>
                             <constraint firstItem="5Fb-Qy-1PU" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="32" id="9wB-Ob-1s7"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="vY2-fy-atB" secondAttribute="trailing" id="BRi-dL-YYN"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="cGh-hz-qdl" secondAttribute="trailing" id="GaO-SW-5Cg"/>
                             <constraint firstItem="3nM-r1-L1X" firstAttribute="top" secondItem="uAJ-L6-XIS" secondAttribute="bottom" constant="8" symbolic="YES" id="Kye-uN-XTy"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="uAJ-L6-XIS" secondAttribute="trailing" constant="16" id="LpA-9M-tCe"/>
                             <constraint firstItem="vfD-S6-mkN" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="Vai-rW-WHd"/>
+                            <constraint firstItem="vY2-fy-atB" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Zmh-an-5ky"/>
                             <constraint firstItem="cGh-hz-qdl" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="bQ1-FR-WiE"/>
                             <constraint firstItem="vfD-S6-mkN" firstAttribute="top" secondItem="UCq-h5-pBD" secondAttribute="bottom" constant="8" symbolic="YES" id="bUR-Ii-i3Y"/>
                             <constraint firstItem="5Fb-Qy-1PU" firstAttribute="top" secondItem="vfD-S6-mkN" secondAttribute="bottom" constant="21" id="cfb-ey-n5f"/>
@@ -82,6 +92,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="cvContainer" destination="vY2-fy-atB" id="kc1-sj-zCq"/>
                         <outlet property="labelSurveys" destination="uAJ-L6-XIS" id="NEf-CH-n3x"/>
                         <outlet property="labelTransactions" destination="UCq-h5-pBD" id="uyw-qd-STn"/>
                         <outlet property="segControl" destination="5Fb-Qy-1PU" id="6xT-Jc-ljb"/>
@@ -90,10 +101,13 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="139" y="139"/>
+            <point key="canvasLocation" x="137.68115942028987" y="138.61607142857142"/>
         </scene>
     </scenes>
     <resources>
+        <systemColor name="secondarySystemBackgroundColor">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

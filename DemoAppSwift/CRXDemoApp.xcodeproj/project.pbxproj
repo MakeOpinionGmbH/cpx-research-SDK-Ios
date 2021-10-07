@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6565DE5E270F53C90021891F /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6565DE5D270F53C90021891F /* UIColor+Hex.swift */; };
 		65C6454225D59C1A0039C854 /* UITableView+Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C6454125D59C1A0039C854 /* UITableView+Register.swift */; };
 		65C6454725D59D7B0039C854 /* SurveyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C6454525D59D7B0039C854 /* SurveyTableViewCell.swift */; };
 		65C6454825D59D7B0039C854 /* SurveyTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65C6454625D59D7B0039C854 /* SurveyTableViewCell.xib */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6565DE5D270F53C90021891F /* UIColor+Hex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
 		65C6454125D59C1A0039C854 /* UITableView+Register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Register.swift"; sourceTree = "<group>"; };
 		65C6454525D59D7B0039C854 /* SurveyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyTableViewCell.swift; sourceTree = "<group>"; };
 		65C6454625D59D7B0039C854 /* SurveyTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SurveyTableViewCell.xib; sourceTree = "<group>"; };
@@ -48,6 +50,7 @@
 		65C6454325D59C480039C854 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				6565DE5D270F53C90021891F /* UIColor+Hex.swift */,
 				65C6454125D59C1A0039C854 /* UITableView+Register.swift */,
 			);
 			path = Extensions;
@@ -182,6 +185,7 @@
 				65F3D4FE25D1245500D14A1E /* ViewController.swift in Sources */,
 				65C6454725D59D7B0039C854 /* SurveyTableViewCell.swift in Sources */,
 				65F3D4FA25D1245500D14A1E /* AppDelegate.swift in Sources */,
+				6565DE5E270F53C90021891F /* UIColor+Hex.swift in Sources */,
 				65C6454225D59C1A0039C854 /* UITableView+Register.swift in Sources */,
 				65F3D4FC25D1245500D14A1E /* SceneDelegate.swift in Sources */,
 			);
