@@ -25,7 +25,7 @@ This SDK is owned by [MakeOpinion GmbH](http://www.makeopinion.com).
 
 # Preview
 
-![IMG_EB0E91DF747E-1_iphone12propacificblue_portrait](https://user-images.githubusercontent.com/7074507/136422244-0a8a71d7-da3d-4513-8c87-2bc037fb9cc8.png)
+![IMG_165AC09C4BCE-1_iphone12propacificblue_portrait](https://user-images.githubusercontent.com/7074507/136428835-081f0146-2c3a-4215-b1da-f5653650eb9b.png)
 
 # Installation
 
