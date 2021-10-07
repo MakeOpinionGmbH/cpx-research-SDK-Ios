@@ -29,6 +29,7 @@ final public class CPXResearch: NSObject {
 
     /// Delegate to get information about CPX Research events regarding, opening/closing views, new surveys and/or transactions.
     @objc public weak var delegate: CPXResearchDelegate?
+    public var delegates: NSHashTable<CPXResearchDelegate> = NSHashTable.weakObjects()
     /// All available surveys
     @objc public var surveys: [SurveyItem] {
         surveyModel?.surveys ?? [SurveyItem]()
@@ -41,6 +42,11 @@ final public class CPXResearch: NSObject {
     }
     /// Current status of the auto refresh of the available surveys
     @objc public var autoUpdateEnabled: Bool { timer != nil }
+    
+    /// Current survey text item
+    public var surveyTextItem: SurveyTextItem? {
+        surveyModel?.text
+    }
 
     public class func setup(with configuration: CPXConfiguration) {
         CPXResearch.configuration = configuration
@@ -108,6 +114,29 @@ final public class CPXResearch: NSObject {
     public func setStyle(_ newStyle: CPXLegacyStyleConfiguration) {
         setStyle(newStyle.asStruct())
     }
+    
+    /// Get a collection view that shows the survey items in a horizontal scroll view
+    public func getCollectionView(configuration: CPXCardConfiguration,
+                                  cellType: CPXResearchCardType = .default) -> CPXResearchCards? {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        let cards = CPXResearchCards(frame: .zero,
+                                     collectionViewLayout: layout,
+                                     configuration: configuration,
+                                     cellType: cellType)
+        cards.setItems(surveys, surveyTextItem: surveyModel?.text)
+        return cards
+    }
+    
+    /// Add an observer to get information about CPX Research events regarding, opening/closing views, new surveys and/or transactions.
+    public func addCPXObserver(_ observer: CPXResearchDelegate) {
+        delegates.add(observer)
+    }
+    
+    /// Remove an observer to end getting events
+    public func removeCPXObserver(_ observer: CPXResearchDelegate) {
+        delegates.remove(observer)
+    }
 
     /// Request a update on available surveys (and unpaid transactions). New surveys and/or unpaid transactions will be published through the *CPXResearchDelegate*.
     /// - Parameter includeUnpaidTransactions: Set to true if a current list of unpaid transactions should be requested as well.
@@ -143,6 +172,7 @@ final public class CPXResearch: NSObject {
                       buttons: [.help, .settings, .home, .close],
                       progressColor: color)
         delegate?.onSurveysDidOpen()
+        self.delegates.allObjects.forEach({ $0.onSurveysDidOpen() })
     }
 
     /// Show the given survey in a webview in a new viewcontroller presented modally.
@@ -204,6 +234,7 @@ final public class CPXResearch: NSObject {
         if let index = unpaidTransactions.firstIndex(where: { $0.id == transId }) {
             self.unpaidTransactions.remove(at: index)
             self.delegate?.onTransactionsUpdated(unpaidTransactions: unpaidTransactions)
+            self.delegates.allObjects.forEach({ $0.onTransactionsUpdated(unpaidTransactions: unpaidTransactions) })
         }
     }
 
@@ -270,6 +301,9 @@ final public class CPXResearch: NSObject {
                 self.delegate?.onSurveysUpdated(new: new,
                                                 updated: updated,
                                                 removed: removed)
+                self.delegates.allObjects.forEach({ $0.onSurveysUpdated(new: new,
+                                                                        updated: updated,
+                                                                        removed: removed) })
             }
 
             if let transactions = model.transactions,
@@ -277,6 +311,7 @@ final public class CPXResearch: NSObject {
                 self.unpaidTransactions = transactions
                 DispatchQueue.main.async {
                     self.delegate?.onTransactionsUpdated(unpaidTransactions: self.unpaidTransactions)
+                    self.delegates.allObjects.forEach({ $0.onTransactionsUpdated(unpaidTransactions: self.unpaidTransactions) })
                 }
             }
 
@@ -341,6 +376,7 @@ extension CPXResearch: WKNavigationDelegate, CPXWebViewDelegate {
         if viewController == webViewController {
             webViewController = nil
             delegate?.onSurveysDidClose()
+            self.delegates.allObjects.forEach({ $0.onSurveysDidClose() })
         }
     }
 }
