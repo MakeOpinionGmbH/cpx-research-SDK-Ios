@@ -15,12 +15,17 @@ This SDK is owned by [MakeOpinion GmbH](http://www.makeopinion.com).
 - [Installation](#installation)
 - [Usage Swift](#usage-swift)
 - [Handling events](#implement-the-delegate-callbacks-swift)
+- [CPX Survey Cards](#cpx-survey-cards)
 - [Usage Objective-C](#usage-objc)
 - [Handling events](#implement-the-delegate-callbacks-objc)
 
 # Prerequisites
 
 - iOS 11 or later
+
+# Preview
+
+![IMG_EB0E91DF747E-1_iphone12propacificblue_portrait](https://user-images.githubusercontent.com/7074507/136422244-0a8a71d7-da3d-4513-8c87-2bc037fb9cc8.png)
 
 # Installation
 
@@ -31,7 +36,7 @@ This SDK is owned by [MakeOpinion GmbH](http://www.makeopinion.com).
 
 # Usage-Swift
 
-## Initialize the frame work
+## Initialize the framework
 
 Enter the following code early in your App's life cycle, for example in the AppDelegate.
 
@@ -141,9 +146,45 @@ extension ViewController: CPXResearchDelegate {
 }
 ```
 
+If you need several objects that handle callbacks you can use the following functions to add/remove the delegate.
+
+```swift
+import CPXResearch
+
+public func addCPXObserver(_ observer: CPXResearchDelegate)
+public func removeCPXObserver(_ observer: CPXResearchDelegate)
+```
+
+## CPX Survey Cards
+To use the CollectionView with a default survey card cell you can get a fully prepared CollectionView from the SDK. Add this to a container view you have on your view controller. The CollectionView handles click and update events.
+
+```swift
+import CPXResearch
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let cardConfiguration = CPXCardConfiguration(accentColor: UIColor(hex: "#41d7e5")!,
+                                                     backgroundColor: .white,
+                                                     inactiveStarColor: UIColor(hex: "#dfdfdf")!,
+                                                     starColor: UIColor(hex: "#ffc400")!,
+                                                     textColor: .label)
+        
+        if let cards = CPXResearch.shared.getCollectionView(configuration: cardConfiguration) {
+            cards.translatesAutoresizingMaskIntoConstraints = false
+            cvContainer.addSubview(cards)
+            cards.topAnchor.constraint(equalTo: cvContainer.topAnchor).isActive = true
+            cards.bottomAnchor.constraint(equalTo: cvContainer.bottomAnchor).isActive = true
+            cards.leadingAnchor.constraint(equalTo: cvContainer.leadingAnchor).isActive = true
+            cards.trailingAnchor.constraint(equalTo: cvContainer.trailingAnchor).isActive = true
+        }
+    }
+```
+
+
 # Usage-Objc
 
-## Initialize the frame work
+## Initialize the framework
 
 Enter the following code early in your App's life cycle, for example in the AppDelegate.
 
