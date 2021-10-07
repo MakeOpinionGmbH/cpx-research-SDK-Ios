@@ -22,7 +22,7 @@ final class CPXResearchCard: UICollectionViewCell {
     
     private let currencyLabel: UILabel = {
         let label = UILabel()
-        label.font = .preferredFont(forTextStyle: .body).bold()
+        label.font = .preferredFont(forTextStyle: .title3).bold()
         label.textAlignment = .center
         return label
     }()
@@ -30,8 +30,8 @@ final class CPXResearchCard: UICollectionViewCell {
     private let timeImageView: UIImageView = {
         let iv = UIImageView()
         iv.translatesAutoresizingMaskIntoConstraints = false
-        iv.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        iv.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        iv.heightAnchor.constraint(equalToConstant: 16).isActive = true
+        iv.widthAnchor.constraint(equalToConstant: 16).isActive = true
         let image = UIImage(named: "icon_clock", in: .module, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
         iv.image = image
         return iv
@@ -39,7 +39,7 @@ final class CPXResearchCard: UICollectionViewCell {
     
     private let timeLabel: UILabel = {
         let label = UILabel()
-        label.font = .preferredFont(forTextStyle: .body).bold()
+        label.font = .preferredFont(forTextStyle: .subheadline).bold()
         label.textAlignment = .center
         return label
     }()
@@ -68,10 +68,10 @@ final class CPXResearchCard: UICollectionViewCell {
     }
     
     private func setupView() {
-        let margin: CGFloat = 8
+        let margin: CGFloat = 4
         let container = UIStackView()
         container.translatesAutoresizingMaskIntoConstraints = false
-        container.spacing = 12
+        container.spacing = 6
         container.axis = .vertical
         container.alignment = .center
         
@@ -85,7 +85,7 @@ final class CPXResearchCard: UICollectionViewCell {
         
         let timeContainer = UIStackView()
         timeContainer.axis = .horizontal
-        timeContainer.spacing = 8
+        timeContainer.spacing = 4
         timeContainer.alignment = .center
         
         timeContainer.addArrangedSubview(timeImageView)
@@ -99,8 +99,8 @@ final class CPXResearchCard: UICollectionViewCell {
         bg.backgroundColor = .white
         bg.addSubview(container)
         
-        container.topAnchor.constraint(equalTo: bg.topAnchor, constant: margin).isActive = true
-        container.bottomAnchor.constraint(equalTo: bg.bottomAnchor, constant: -margin).isActive = true
+        container.topAnchor.constraint(equalTo: bg.topAnchor, constant: 8).isActive = true
+        container.bottomAnchor.constraint(equalTo: bg.bottomAnchor, constant: -8).isActive = true
         container.leadingAnchor.constraint(equalTo: bg.leadingAnchor, constant: margin).isActive = true
         container.trailingAnchor.constraint(equalTo: bg.trailingAnchor, constant: -margin).isActive = true
         
@@ -123,7 +123,7 @@ final class CPXResearchCard: UICollectionViewCell {
 
 extension CPXResearchCard: CPXResearchCardProtocol {
     static func size() -> CGSize {
-        CGSize(width: 160, height: 160)
+        CGSize(width: 120, height: 120)
     }
     
     func setupCellWith(_ surveyItem: SurveyItem,
