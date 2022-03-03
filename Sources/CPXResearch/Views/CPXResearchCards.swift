@@ -41,6 +41,12 @@ public class CPXResearchCards: UICollectionView {
         self.delegate = self
         
         CPXResearch.shared.addCPXObserver(self)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(onRotationDetected(_:)),
+                                               name: UIDevice.orientationDidChangeNotification,
+                                               object: nil)
+
+        contentInset = configuration.contentInsets
     }
     
     required init?(coder: NSCoder) {
@@ -49,12 +55,22 @@ public class CPXResearchCards: UICollectionView {
     
     deinit {
         CPXResearch.shared.removeCPXObserver(self)
+        NotificationCenter.default.removeObserver(self,
+                                                  name: UIDevice.orientationDidChangeNotification,
+                                                  object: nil)
     }
     
     public func setItems(_ items: [SurveyItem], surveyTextItem: SurveyTextItem?) {
         self.data = items
         self.textItem = surveyTextItem
         reloadData()
+    }
+
+    @objc
+    private func onRotationDetected(_ notification: Notification) {
+        DispatchQueue.main.async { [weak self] in
+            self?.collectionViewLayout.invalidateLayout()
+        }
     }
 }
 
@@ -68,13 +84,20 @@ extension CPXResearchCards: CPXResearchDelegate {
     public func onSurveysDidOpen() { }
     
     public func onSurveysDidClose() { }
+
+    public func onSurveyDidOpen() { }
+
+    public func onSurveyDidClose() { }
 }
 
 extension CPXResearchCards: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return data?.count ?? 0
+            if let data = data {
+                return min(data.count, configuration.maximumItems)
+            }
+            return 0
         default:
             return 0
         }
@@ -98,11 +121,15 @@ extension CPXResearchCards: UICollectionViewDataSource, UICollectionViewDelegate
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return cellType.size()
+        let borderInset = Const.cardMargins.left + Const.cardMargins.right
+        let marginPerItem = max((collectionViewLayout as? UICollectionViewFlowLayout)?.minimumLineSpacing ?? 0, borderInset)
+        let margins = marginPerItem * CGFloat(configuration.cardsOnScreen - 1) + configuration.contentInsets.left + configuration.contentInsets.right - borderInset - Const.cardMargins.right
+        let cardWidth: CGFloat = max(80, (collectionView.bounds.width - margins) / CGFloat(configuration.cardsOnScreen))
+        return CGSize(width: cardWidth, height: 100)
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4)
+        return Const.cardMargins
     }
     
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

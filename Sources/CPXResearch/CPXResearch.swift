@@ -17,7 +17,6 @@ final public class CPXResearch: NSObject {
 
     private var api = NetworkService()
     private var bannerView: CPXBannerView?
-    private var webView: CPXWebView?
     private var shouldShowBannerIfAvailable = false {
         didSet {
             shouldShowBannerIfAvailable ? installBanner() : removeBanner()
@@ -117,11 +116,18 @@ final public class CPXResearch: NSObject {
     
     /// Get a collection view that shows the survey items in a horizontal scroll view
     public func getCollectionView(configuration: CPXCardConfiguration,
-                                  cellType: CPXResearchCardType = .default) -> CPXResearchCards? {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
+                                  cellType: CPXResearchCardType = .default,
+                                  layout: UICollectionViewLayout? = nil) -> CPXResearchCards? {
+        var viewLayout: UICollectionViewLayout? = layout
+        if viewLayout == nil {
+            viewLayout = UICollectionViewFlowLayout()
+            (viewLayout as! UICollectionViewFlowLayout).scrollDirection = .horizontal
+            (viewLayout as! UICollectionViewFlowLayout).minimumInteritemSpacing = 0
+            (viewLayout as! UICollectionViewFlowLayout).minimumLineSpacing = 0
+        }
+
         let cards = CPXResearchCards(frame: .zero,
-                                     collectionViewLayout: layout,
+                                     collectionViewLayout: viewLayout!,
                                      configuration: configuration,
                                      cellType: cellType)
         cards.setItems(surveys, surveyTextItem: surveyModel?.text)
@@ -164,10 +170,15 @@ final public class CPXResearch: NSObject {
               let color = UIColor(hex: config.style.backgroundColor)
         else { return }
 
-        webView = CPXWebView(frame: .zero,
+        let webView = CPXWebView(frame: .zero,
                             delegate: self)
         webViewController = viewController
-        webView?.open(on: viewController,
+        webView.onCloseAction = { [weak self] in
+            guard let self = self else { return }
+            self.delegate?.onSurveysDidClose()
+            self.delegates.allObjects.forEach({ $0.onSurveysDidClose() })
+        }
+        webView.open(on: viewController,
                       for: url,
                       buttons: [.help, .settings, .home, .close],
                       progressColor: color)
@@ -186,13 +197,20 @@ final public class CPXResearch: NSObject {
               let color = UIColor(hex: config.style.backgroundColor)
         else { return }
 
-        webView = CPXWebView(frame: .zero,
+        let webView = CPXWebView(frame: .zero,
                              delegate: self)
         webViewController = viewController
-        webView?.open(on: viewController,
+        webView.onCloseAction = { [weak self] in
+            guard let self = self else { return }
+            self.delegate?.onSurveyDidClose()
+            self.delegates.allObjects.forEach({ $0.onSurveyDidClose() })
+        }
+        webView.open(on: viewController,
                       for: url,
                       buttons: [.help, .settings, .close],
                       progressColor: color)
+        delegate?.onSurveyDidOpen()
+        self.delegates.allObjects.forEach({ $0.onSurveyDidOpen() })
     }
 
     /// Shows the dialog in which the user can select for how long no surveys should be shown.
@@ -204,13 +222,15 @@ final public class CPXResearch: NSObject {
               let color = UIColor(hex: config.style.backgroundColor)
         else { return }
 
-        webView = CPXWebView(frame: .zero,
-                            delegate: self)
-        webViewController = viewController
-        webView?.open(on: viewController,
-                      for: url,
-                      buttons: [.close],
-                      progressColor: color)
+        let webView = CPXWebView(frame: .zero,
+                                 delegate: self)
+        if webViewController == nil {
+            webViewController = viewController
+        }
+        webView.open(on: viewController,
+                     for: url,
+                     buttons: [.close],
+                     progressColor: color)
     }
 
     /// Tells CPX Research that a transaction has been paid to the user. This removes the transaction from the unpaid list.
@@ -362,23 +382,39 @@ extension CPXResearch: WKNavigationDelegate, CPXWebViewDelegate {
 
         if let viewController = webViewController?.presentedViewController,
            let json = try? JSONEncoder().encode(session) {
-            webView = CPXWebView(frame: .zero,
-                                delegate: self)
-            webView?.open(on: viewController,
-                          for: url,
-                          buttons: [.close],
-                          progressColor: color,
-                          body: json)
+            let webView = CPXWebView(frame: .zero,
+                                     delegate: self)
+            webView.open(on: viewController,
+                         for: url,
+                         buttons: [.close],
+                         progressColor: color,
+                         body: json)
         }
     }
 
-    func didClose(_ viewController: UIViewController) {
-        if viewController == webViewController {
-            webViewController = nil
-            delegate?.onSurveysDidClose()
-            self.delegates.allObjects.forEach({ $0.onSurveysDidClose() })
+    func showConfirmDialogBeforeClose(onResult: @escaping ((_ canClose: Bool) -> Void)) {
+        if let dialog = CPXResearch.configuration?.customConfirmDialogTexts,
+           let viewController = webViewController?.presentedViewController,
+           viewController.presentedViewController == nil {
+            let alert = UIAlertController(title: dialog.title,
+                                          message: dialog.msg,
+                                          preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: dialog.leaveButtonText,
+                                          style: UIAlertAction.Style.default) { _ in
+                onResult(true)
+            })
+            alert.addAction(UIAlertAction(title: dialog.cancelButtonText,
+                                          style: UIAlertAction.Style.cancel) { _ in
+                onResult(false)
+            })
+
+            viewController.present(alert, animated: true, completion: nil)
+        } else {
+            onResult(true)
         }
     }
+
+    func didClose(_ viewController: UIViewController) { }
 }
 
 /// Delegate to receive updates on surveys and unpaid transactions.
@@ -402,6 +438,12 @@ public protocol CPXResearchDelegate: AnyObject {
     func onSurveysDidOpen()
     /// Called after the survey list (or the root CPX Research Webview) has been closed.
     func onSurveysDidClose()
+
+    /// Called when a single survey was opened directly or by a tap on a CPX Card
+    func onSurveyDidOpen()
+
+    /// Called when a single survey has been closed.
+    func onSurveyDidClose()
 }
 
 #endif

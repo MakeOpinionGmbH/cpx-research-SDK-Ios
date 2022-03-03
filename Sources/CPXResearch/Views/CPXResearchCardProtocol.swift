@@ -12,5 +12,4 @@ public protocol CPXResearchCardProtocol where Self: UICollectionViewCell {
     func setupCellWith(_ surveyItem: SurveyItem,
                        surveyTextItem: SurveyTextItem,
                        configuration: CPXCardConfiguration)
-    static func size() -> CGSize
 }

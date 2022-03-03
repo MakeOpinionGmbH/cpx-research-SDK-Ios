@@ -29,8 +29,8 @@ final class CPXReviewBar: UIStackView {
         for i in 0...4 {
             let iv = UIImageView()
             iv.translatesAutoresizingMaskIntoConstraints = false
-            iv.heightAnchor.constraint(equalToConstant: 16).isActive = true
-            iv.widthAnchor.constraint(equalToConstant: 16).isActive = true
+            iv.heightAnchor.constraint(equalToConstant: 12).isActive = true
+            iv.widthAnchor.constraint(equalToConstant: 12).isActive = true
             iv.tintColor = i < amount ? starColor : inactiveStarColor
             iv.image = image
             addArrangedSubview(iv)

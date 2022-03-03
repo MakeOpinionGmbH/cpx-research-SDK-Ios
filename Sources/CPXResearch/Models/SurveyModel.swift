@@ -74,6 +74,7 @@ public final class SurveyItem: NSObject, Codable, Identifiable {
         case details
         case earnedAll = "earned_all"
         case additionalParameter = "additional_parameter"
+        case payoutOriginal = "payout_original"
     }
 
     /// The id of the survey.
@@ -88,17 +89,20 @@ public final class SurveyItem: NSObject, Codable, Identifiable {
     public let details: Int?
     public let earnedAll: Int?
     @objc public let additionalParameter: Dictionary<String, String>?
+    @objc public let payoutOriginal: String?
+    @objc public var hasOfferPayout: Bool { payoutOriginal != nil && !payoutOriginal!.isEmpty }
 
     public static func ==(lhs: SurveyItem, rhs: SurveyItem) -> Bool {
         return lhs.id == rhs.id &&
-            lhs.loi == rhs.loi &&
-            lhs.payout == rhs.payout &&
-            lhs.conversionRate == rhs.conversionRate &&
-            lhs.statisticsRatingCount == rhs.statisticsRatingCount &&
-            lhs.statisticsRatingAvg == rhs.statisticsRatingAvg &&
-            lhs.type == rhs.type &&
-            lhs.top == rhs.top &&
-            lhs.details == rhs.details &&
-            lhs.earnedAll == rhs.earnedAll
+        lhs.loi == rhs.loi &&
+        lhs.payout == rhs.payout &&
+        lhs.conversionRate == rhs.conversionRate &&
+        lhs.statisticsRatingCount == rhs.statisticsRatingCount &&
+        lhs.statisticsRatingAvg == rhs.statisticsRatingAvg &&
+        lhs.type == rhs.type &&
+        lhs.top == rhs.top &&
+        lhs.details == rhs.details &&
+        lhs.earnedAll == rhs.earnedAll &&
+        lhs.payoutOriginal == rhs.payoutOriginal
     }
 }

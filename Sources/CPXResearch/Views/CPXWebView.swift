@@ -15,6 +15,7 @@ protocol CPXWebViewDelegate {
     func onInfoTapped()
     func onSettingsTapped()
 
+    func showConfirmDialogBeforeClose(onResult: @escaping ((_ canClose: Bool) -> Void))
     func didClose(_ viewController: UIViewController)
 }
 
@@ -35,6 +36,8 @@ final class CPXWebView: WKWebView {
     private weak var viewController: UIViewController?
     private var observation: NSKeyValueObservation? = nil
     private weak var progressView: UIProgressView?
+
+    var onCloseAction: (() -> Void)?
     
     init(frame: CGRect,
          configuration: WKWebViewConfiguration = WKWebViewConfiguration(),
@@ -143,7 +146,6 @@ final class CPXWebView: WKWebView {
             request.httpMethod = "POST"
             request.httpBody = body
         }
-        self.viewController = vc
         load(request)
     }
 
@@ -187,11 +189,27 @@ final class CPXWebView: WKWebView {
         guard let ivTag = ButtonType(rawValue: recognizer.view?.tag ?? ButtonType.close.rawValue) else { return }
         switch ivTag {
         case .close:
-            if let vc = viewController,
-               let presenter = vc.presentingViewController {
-                vc.dismiss(animated: true) {
-                    self.delegate?.didClose(presenter)
+            if let delegate = delegate {
+                delegate.showConfirmDialogBeforeClose { [weak self] canClose in
+                    guard let self = self else { return }
+                    if canClose {
+                        if let vc = self.viewController,
+                           let presenter = vc.presentingViewController {
+                            vc.dismiss(animated: true) {
+                                delegate.didClose(presenter)
+                            }
+                        }
+                        self.onCloseAction?()
+                    }
                 }
+            } else {
+                if let vc = viewController,
+                   let presenter = vc.presentingViewController {
+                    vc.dismiss(animated: true) {
+                        self.delegate?.didClose(presenter)
+                    }
+                }
+                onCloseAction?()
             }
         case .help:
             UIGraphicsBeginImageContext(frame.size)

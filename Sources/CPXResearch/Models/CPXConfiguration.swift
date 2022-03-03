@@ -42,6 +42,31 @@ public struct CPXConfiguration {
         }
     }
 
+    /// Model for customizing the close dialog when the user tries to close the survey list or a survey
+    public struct CPXCustomConfirmDialogTexts {
+        var title: String?
+        var msg: String?
+        var leaveButtonText: String?
+        var cancelButtonText: String?
+
+        public init(title: String?,
+                    msg: String?,
+                    leaveButtonText: String?,
+                    cancelButtonText: String?) {
+            self.title = title
+            self.msg = msg
+            self.leaveButtonText = leaveButtonText
+            self.cancelButtonText = cancelButtonText
+        }
+
+        public static var `default`: CPXCustomConfirmDialogTexts {
+            CPXCustomConfirmDialogTexts(title: "Leave Survey",
+                                        msg: "Once you leave this survey, you won\'t be able to try it again.\n\nDo you want to continue?",
+                                        leaveButtonText: "Leave Survey",
+                                        cancelButtonText: "Cancel")
+        }
+    }
+
     /// The position and style of the banner/notification if there are surveys available.
     public enum SurveyPosition {
         /// Banner on the side, centered vertically. Either on the left or right side of the device.
@@ -154,6 +179,7 @@ public struct CPXConfiguration {
     let extUserId: String
     let secureHash: String
     var style: CPXStyleConfiguration
+    let customConfirmDialogTexts: CPXCustomConfirmDialogTexts?
 
     let email: String?
     let subid1: String?
@@ -176,7 +202,7 @@ public struct CPXConfiguration {
             URLQueryItem(name: Const.text, value: style.text),
             URLQueryItem(name: Const.textSize, value: String(style.textSize * Int(UIScreen.main.scale))),
             URLQueryItem(name: Const.sdk, value: "ios"),
-            URLQueryItem(name: Const.sdkVersion, value: "1.0.0"),
+            URLQueryItem(name: Const.sdkVersion, value: "1.4.0"),
             URLQueryItem(name: Const.secureHash, value: CPXHash.md5(string: "\(extUserId)-\(secureHash)"))
         ]
         if let email = email {
@@ -214,7 +240,8 @@ public struct CPXConfiguration {
                 subId1: String? = nil,
                 subId2: String? = nil,
                 extraInfo: [String]? = nil,
-                style: CPXStyleConfiguration) {
+                style: CPXStyleConfiguration,
+                customConfirmCloseDialogTexts: CPXCustomConfirmDialogTexts? = .default) {
         self.appId = appId
         self.extUserId = extUserId
         self.secureHash = secureHash
@@ -227,6 +254,7 @@ public struct CPXConfiguration {
         } else {
             self.extraInfo = nil
         }
+        self.customConfirmDialogTexts = customConfirmCloseDialogTexts
     }
 }
 #endif
