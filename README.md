@@ -25,7 +25,7 @@ This SDK is owned by [MakeOpinion GmbH](http://www.makeopinion.com).
 
 # Preview
 
-![IMG_165AC09C4BCE-1_iphone12propacificblue_portrait](https://user-images.githubusercontent.com/7074507/136428835-081f0146-2c3a-4215-b1da-f5653650eb9b.png)
+![IMG_EB0E91DF747E-1_iphone12propacificblue_portrait](https://user-images.githubusercontent.com/7074507/136422244-0a8a71d7-da3d-4513-8c87-2bc037fb9cc8.png)
 
 # Installation
 
@@ -168,7 +168,13 @@ import CPXResearch
                                                      backgroundColor: .white,
                                                      inactiveStarColor: UIColor(hex: "#dfdfdf")!,
                                                      starColor: UIColor(hex: "#ffc400")!,
-                                                     textColor: .label)
+                                                     textColor: .label,
+                                                     cardsOnScreen: 4, // how many CPX Cards are visible at the same time
+                                                     cornerRadius: 20, // optional, defaults to 10
+                                                     promotionAmountColor: UIColor.red, // optional, text color of promotion offers, defaults to .systemRed
+                                                     maximumItems: 4, // optional, maximum amount of CPX Cards that will be included in the CollectionView, default is Int.max to show a card for every survey
+                                                     contentInsets: UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8) // optional, sets insets for the collectionview, defaults to .zero
+                                                     )
         
         if let cards = CPXResearch.shared.getCollectionView(configuration: cardConfiguration) {
             cards.translatesAutoresizingMaskIntoConstraints = false
