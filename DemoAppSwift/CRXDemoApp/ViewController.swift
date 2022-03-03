@@ -53,7 +53,8 @@ class ViewController: UIViewController {
                                                      backgroundColor: .white,
                                                      inactiveStarColor: UIColor(hex: "#dfdfdf")!,
                                                      starColor: UIColor(hex: "#ffc400")!,
-                                                     textColor: .label)
+                                                     textColor: .label,
+                                                     cardsOnScreen: 4)
         
         if let cards = CPXResearch.shared.getCollectionView(configuration: cardConfiguration) {
             cards.translatesAutoresizingMaskIntoConstraints = false
@@ -119,6 +120,14 @@ extension ViewController: CPXResearchDelegate {
 
     func onSurveysDidClose() {
         print("Surveys did close.")
+    }
+
+    func onSurveyDidOpen() {
+        print("Survey did open.")
+    }
+
+    func onSurveyDidClose() {
+        print("Survey did close.")
     }
 }
 
