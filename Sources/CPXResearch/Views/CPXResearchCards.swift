@@ -10,6 +10,7 @@ import UIKit
 
 public enum CPXResearchCardType {
     case `default`
+    case small
     case custom(type: CPXResearchCardProtocol.Type)
 }
 
@@ -23,15 +24,17 @@ public class CPXResearchCards: UICollectionView {
     
     public init(frame: CGRect,
                 collectionViewLayout layout: UICollectionViewLayout,
-                configuration: CPXCardConfiguration,
-                cellType: CPXResearchCardType = .default) {
+                configuration: CPXCardConfiguration) {
         self.configuration = configuration
         super.init(frame: frame, collectionViewLayout: layout)
         
-        switch cellType {
+        switch configuration.cardStyle {
         case .default:
             register(CPXResearchCard.self, forCellWithReuseIdentifier: "cell")
             self.cellType = CPXResearchCard.self
+        case .small:
+            register(CPXResearchSmallCard.self, forCellWithReuseIdentifier: "cell")
+            self.cellType = CPXResearchSmallCard.self
         case .custom(let type):
             register(type, forCellWithReuseIdentifier: "cell")
             self.cellType = type
@@ -75,7 +78,7 @@ public class CPXResearchCards: UICollectionView {
 }
 
 extension CPXResearchCards: CPXResearchDelegate {
-    public func onSurveysUpdated(new: [SurveyItem], updated: [SurveyItem], removed: [SurveyItem]) {
+    public func onSurveysUpdated() {
         setItems(CPXResearch.shared.surveys, surveyTextItem: CPXResearch.shared.surveyTextItem)
     }
     
@@ -122,10 +125,17 @@ extension CPXResearchCards: UICollectionViewDataSource, UICollectionViewDelegate
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let borderInset = Const.cardMargins.left + Const.cardMargins.right
-        let marginPerItem = max((collectionViewLayout as? UICollectionViewFlowLayout)?.minimumLineSpacing ?? 0, borderInset)
-        let margins = marginPerItem * CGFloat(configuration.cardsOnScreen - 1) + configuration.contentInsets.left + configuration.contentInsets.right - borderInset - Const.cardMargins.right
-        let cardWidth: CGFloat = max(80, (collectionView.bounds.width - margins) / CGFloat(configuration.cardsOnScreen))
-        return CGSize(width: cardWidth, height: 100)
+        if configuration.fixedWidth == 0 {
+            let marginPerItem = max((collectionViewLayout as? UICollectionViewFlowLayout)?.minimumLineSpacing ?? 0, borderInset)
+            let margins = marginPerItem * CGFloat(configuration.cardsOnScreen - 1) + configuration.contentInsets.left + configuration.contentInsets.right - borderInset - Const.cardMargins.right
+            let cardWidth: CGFloat = max(80, (collectionView.bounds.width - margins) / CGFloat(configuration.cardsOnScreen))
+
+            return CGSize(width: cardWidth,
+                          height: cellType.cellHeight)
+        } else {
+            return CGSize(width: CGFloat(configuration.fixedWidth) + borderInset,
+                          height: cellType.cellHeight)
+        }
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {

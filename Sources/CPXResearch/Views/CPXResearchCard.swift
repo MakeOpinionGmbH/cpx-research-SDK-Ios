@@ -136,7 +136,9 @@ final class CPXResearchCard: UICollectionViewCell {
     }
 }
 
-extension CPXResearchCard: CPXResearchCardProtocol {   
+extension CPXResearchCard: CPXResearchCardProtocol {
+    static var cellHeight: CGFloat { 100 }
+
     func setupCellWith(_ surveyItem: SurveyItem,
                        surveyTextItem: SurveyTextItem,
                        configuration: CPXCardConfiguration) {
@@ -147,8 +149,11 @@ extension CPXResearchCard: CPXResearchCardProtocol {
         currencyLabel.text = getCurrency()
         timeLabel.text = getEstimatedTime()
         ratingBar.setReviewStarsTo(getRating(),
+                                   size: 12,
                                    starColor: configuration.starColor,
-                                   inactiveStarColor: configuration.inactiveStarColor)
+                                   inactiveStarColor: configuration.inactiveStarColor,
+                                   textColor: configuration.textColor,
+                                   ratingAmount: nil)
 
         timeImageView.tintColor = configuration.accentColor
         amountLabel.textColor = configuration.accentColor

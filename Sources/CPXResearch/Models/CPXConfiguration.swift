@@ -202,7 +202,7 @@ public struct CPXConfiguration {
             URLQueryItem(name: Const.text, value: style.text),
             URLQueryItem(name: Const.textSize, value: String(style.textSize * Int(UIScreen.main.scale))),
             URLQueryItem(name: Const.sdk, value: "ios"),
-            URLQueryItem(name: Const.sdkVersion, value: "1.4.0"),
+            URLQueryItem(name: Const.sdkVersion, value: "1.5.0"),
             URLQueryItem(name: Const.secureHash, value: CPXHash.md5(string: "\(extUserId)-\(secureHash)"))
         ]
         if let email = email {

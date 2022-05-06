@@ -116,20 +116,18 @@ final public class CPXResearch: NSObject {
     
     /// Get a collection view that shows the survey items in a horizontal scroll view
     public func getCollectionView(configuration: CPXCardConfiguration,
-                                  cellType: CPXResearchCardType = .default,
-                                  layout: UICollectionViewLayout? = nil) -> CPXResearchCards? {
+                                  layout: UICollectionViewLayout? = nil) -> CPXResearchCards {
         var viewLayout: UICollectionViewLayout? = layout
         if viewLayout == nil {
             viewLayout = UICollectionViewFlowLayout()
             (viewLayout as! UICollectionViewFlowLayout).scrollDirection = .horizontal
             (viewLayout as! UICollectionViewFlowLayout).minimumInteritemSpacing = 0
-            (viewLayout as! UICollectionViewFlowLayout).minimumLineSpacing = 0
+            (viewLayout as! UICollectionViewFlowLayout).minimumLineSpacing = 4
         }
 
         let cards = CPXResearchCards(frame: .zero,
                                      collectionViewLayout: viewLayout!,
-                                     configuration: configuration,
-                                     cellType: cellType)
+                                     configuration: configuration)
         cards.setItems(surveys, surveyTextItem: surveyModel?.text)
         return cards
     }
@@ -171,7 +169,7 @@ final public class CPXResearch: NSObject {
         else { return }
 
         let webView = CPXWebView(frame: .zero,
-                            delegate: self)
+                                 delegate: self)
         webViewController = viewController
         webView.onCloseAction = { [weak self] in
             guard let self = self else { return }
@@ -179,9 +177,9 @@ final public class CPXResearch: NSObject {
             self.delegates.allObjects.forEach({ $0.onSurveysDidClose() })
         }
         webView.open(on: viewController,
-                      for: url,
-                      buttons: [.help, .settings, .home, .close],
-                      progressColor: color)
+                     for: url,
+                     buttons: [.help, .settings, .home, .close],
+                     progressColor: color)
         delegate?.onSurveysDidOpen()
         self.delegates.allObjects.forEach({ $0.onSurveysDidOpen() })
     }
@@ -198,7 +196,7 @@ final public class CPXResearch: NSObject {
         else { return }
 
         let webView = CPXWebView(frame: .zero,
-                             delegate: self)
+                                 delegate: self)
         webViewController = viewController
         webView.onCloseAction = { [weak self] in
             guard let self = self else { return }
@@ -206,9 +204,9 @@ final public class CPXResearch: NSObject {
             self.delegates.allObjects.forEach({ $0.onSurveyDidClose() })
         }
         webView.open(on: viewController,
-                      for: url,
-                      buttons: [.help, .settings, .close],
-                      progressColor: color)
+                     for: url,
+                     buttons: [.help, .settings, .close],
+                     progressColor: color)
         delegate?.onSurveyDidOpen()
         self.delegates.allObjects.forEach({ $0.onSurveyDidOpen() })
     }
@@ -272,11 +270,12 @@ final public class CPXResearch: NSObject {
               hasSurveysAvailable,
               webViewController == nil,
               let conf = CPXResearch.configuration,
+              let text = surveyModel?.text,
               let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) else { return }
         bannerView = CPXBannerView(on: window,
-                                position: conf.style.position,
-                                textModel: surveyModel!.text,
-                                backgroundColor: UIColor(hex: conf.style.backgroundColor) ?? .white)
+                                   position: conf.style.position,
+                                   textModel: text,
+                                   backgroundColor: UIColor(hex: conf.style.backgroundColor) ?? .white)
         window.addSubview(bannerView!)
     }
 
@@ -297,33 +296,9 @@ final public class CPXResearch: NSObject {
         case .failure(let error):
             print("Error: \(error)")
         case .success(let model):
-            let oldSurveys = self.surveys
-
-            let new = model.surveys.filter { item in
-                !oldSurveys.contains { other in
-                    item.id == other.id
-                }
-            }
-
-            let removed = oldSurveys.filter { item in
-                !model.surveys.contains(where: { other in
-                    item.id == other.id
-                })
-            }
-
-            let updated = model.surveys.filter { item in
-                oldSurveys.contains(where: { other in
-                    item.id == other.id && item != other
-                })
-            }
-
             DispatchQueue.main.async {
-                self.delegate?.onSurveysUpdated(new: new,
-                                                updated: updated,
-                                                removed: removed)
-                self.delegates.allObjects.forEach({ $0.onSurveysUpdated(new: new,
-                                                                        updated: updated,
-                                                                        removed: removed) })
+                self.delegate?.onSurveysUpdated()
+                self.delegates.allObjects.forEach({ $0.onSurveysUpdated() })
             }
 
             if let transactions = model.transactions,
@@ -422,13 +397,7 @@ extension CPXResearch: WKNavigationDelegate, CPXWebViewDelegate {
 public protocol CPXResearchDelegate: AnyObject {
 
     /// Called when there are new, updated or surveys removed.
-    /// - Parameters:
-    ///   - new: New surveys since the last call of this function.
-    ///   - updated: Updated surveys since the last call of this function.
-    ///   - removed: Surveys not longer available for the user.
-    func onSurveysUpdated(new: [SurveyItem],
-                          updated: [SurveyItem],
-                          removed: [SurveyItem])
+    func onSurveysUpdated()
 
     /// Called when unpaid transactions are received.
     /// - Parameter unpaidTransactions: An array of currently unpaid transactions.

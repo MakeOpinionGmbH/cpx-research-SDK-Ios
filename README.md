@@ -9,6 +9,8 @@ This SDK is owned by [MakeOpinion GmbH](http://www.makeopinion.com).
 
 [Learn more.](https://cpx-research.com/)
 
+[View available demo apps (in Swift and Objective-C)](https://github.com/MakeOpinionGmbH/cpx-research-SDK-Ios-demos)
+
 # Table of Contents
 
 - [Prerequisites](#prerequisites)
@@ -31,7 +33,7 @@ This SDK is owned by [MakeOpinion GmbH](http://www.makeopinion.com).
 
 - Open Xcode
 - Select File -> Swift Packages -> Add Package Dependency...
-- Enter `git@github.com:MakeOpinionGmbH/cpx-research-SDK-Ios.git` and click next
+- Enter `https://github.com/MakeOpinionGmbH/cpx-research-SDK-Ios.git` and click next
 - Make sure the Package CPXResearch is checked and click finish
 
 # Usage-Swift
@@ -126,9 +128,7 @@ Mark a transaction as paid
 import CPXResearch
 
 extension ViewController: CPXResearchDelegate {
-    func onSurveysUpdated(new: [SurveyItem],
-                          updated: [SurveyItem],
-                          removed: [SurveyItem]) {
+    func onSurveysUpdated() {
         //handle changes on available surveys
     }
 
@@ -158,32 +158,47 @@ public func removeCPXObserver(_ observer: CPXResearchDelegate)
 ## CPX Survey Cards
 To use the CollectionView with a default survey card cell you can get a fully prepared CollectionView from the SDK. Add this to a container view you have on your view controller. The CollectionView handles click and update events.
 
+### CPXCardStyle
+#### DEFAULT
+![Preview DEFAULT](img/CPXCardStyle_DEFAULT.png)
+#### SMALL
+![Preview SMALL](img/CPXCardStyle_SMALL.png)
+
 ```swift
 import CPXResearch
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        let defaultConfiguration = CPXCardConfiguration.Builder
+            .build()
+
+        let smallCardConfiguration = CPXCardConfiguration.Builder
+            .accentColor(UIColor(hex: "#41d7e5")!)
+            .backgroundColor(.white)
+            .starColor(UIColor(hex: "#ffc400")!)
+            .inactiveStarColor(UIColor(hex: "#dfdfdf")!)
+            .textColor(.label)
+            .dividerColor(UIColor(hex: "#5A7DFE")!) // (only for SMALL style)
+            .promotionAmountColor(.systemRed) // optional, text color of promotion offers, defaults to .systemRed (only for DEFAULT style)
+            .cardsOnScreen(4) // how many CPX Cards are visible at the same time, defaults to 3
+            .maximumSurveys(4) // optional, maximum amount of CPX Cards that will be included in the CollectionView, default is Int.max to show a card for every survey
+            .cornderRadius(4) // optional, defaults to 10
+            .padding(UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)) // optional, sets insets for the collectionview, defaults to .zero
+            .cpxCardStyle(.small) // set card style
+            .fixedCPXCardWidth(132) // instead of autocalculate use a fixed card width
+            .currencyPrefixImage(UIImage(named: "current")!) // for SMALL style only: set an optional image before the currency text
+            .hideCurrencyName(true) // hides the currency name behind the amount, defaults to false
+            .hideRatingAmount(false) // set to false to show the total amount of ratings behind the stars, defaults to true
+            .build() 
         
-        let cardConfiguration = CPXCardConfiguration(accentColor: UIColor(hex: "#41d7e5")!,
-                                                     backgroundColor: .white,
-                                                     inactiveStarColor: UIColor(hex: "#dfdfdf")!,
-                                                     starColor: UIColor(hex: "#ffc400")!,
-                                                     textColor: .label,
-                                                     cardsOnScreen: 4, // how many CPX Cards are visible at the same time
-                                                     cornerRadius: 20, // optional, defaults to 10
-                                                     promotionAmountColor: UIColor.red, // optional, text color of promotion offers, defaults to .systemRed
-                                                     maximumItems: 4, // optional, maximum amount of CPX Cards that will be included in the CollectionView, default is Int.max to show a card for every survey
-                                                     contentInsets: UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8) // optional, sets insets for the collectionview, defaults to .zero
-                                                     )
-        
-        if let cards = CPXResearch.shared.getCollectionView(configuration: cardConfiguration) {
-            cards.translatesAutoresizingMaskIntoConstraints = false
-            cvContainer.addSubview(cards)
-            cards.topAnchor.constraint(equalTo: cvContainer.topAnchor).isActive = true
-            cards.bottomAnchor.constraint(equalTo: cvContainer.bottomAnchor).isActive = true
-            cards.leadingAnchor.constraint(equalTo: cvContainer.leadingAnchor).isActive = true
-            cards.trailingAnchor.constraint(equalTo: cvContainer.trailingAnchor).isActive = true
-        }
+        let cardsSmall = CPXResearch.shared.getCollectionView(configuration: smallCardConfiguration)
+        cardsSmall.translatesAutoresizingMaskIntoConstraints = false
+        cvSmallContainer.addSubview(cardsSmall)
+        cardsSmall.topAnchor.constraint(equalTo: cvSmallContainer.topAnchor).isActive = true
+        cardsSmall.bottomAnchor.constraint(equalTo: cvSmallContainer.bottomAnchor).isActive = true
+        cardsSmall.leadingAnchor.constraint(equalTo: cvSmallContainer.leadingAnchor).isActive = true
+        cardsSmall.trailingAnchor.constraint(equalTo: cvSmallContainer.trailingAnchor).isActive = true
     }
 ```
 
@@ -285,9 +300,7 @@ Mark a transaction as paid
     //event that survey list in a webview is being displayed
 }
 
-- (void)onSurveysUpdatedWithNew:(NSArray<SurveyItem *> * _Nonnull)new_
-                        updated:(NSArray<SurveyItem *> * _Nonnull)updated
-                        removed:(NSArray<SurveyItem *> * _Nonnull)removed {
+- (void)onSurveysUpdated {
     //handle changes on available surveys
 }
 
