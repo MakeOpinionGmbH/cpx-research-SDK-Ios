@@ -35,6 +35,13 @@ final class CPXResearchSmallCard: UICollectionViewCell {
         label.textAlignment = .center
         return label
     }()
+
+    private let amountOriginal: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 10, weight: .bold)
+        label.textAlignment = .center
+        return label
+    }()
     
     private let currencyLabel: UILabel = {
         let label = UILabel()
@@ -76,6 +83,7 @@ final class CPXResearchSmallCard: UICollectionViewCell {
         let topContainer = UIStackView()
         topContainer.spacing = 0
         topContainer.axis = .horizontal
+        topContainer.alignment = .bottom
         return topContainer
     }()
     private let coloredBg: UIView = {
@@ -107,11 +115,13 @@ final class CPXResearchSmallCard: UICollectionViewCell {
         super.prepareForReuse()
         
         amountLabel.text = nil
+        amountOriginal.text = nil
         currencyLabel.text = nil
         timeLabel.text = nil
     }
     
     private func setupView() {
+        topContainer.addArrangedSubview(amountOriginal)
         topContainer.addArrangedSubview(amountLabel)
         topContainer.addArrangedSubview(currencyLabel)
         
@@ -175,6 +185,9 @@ extension CPXResearchSmallCard: CPXResearchCardProtocol {
         self.surveyTextItem = surveyTextItem
         
         dividerView.backgroundColor = configuration.dividerColor
+        amountLabel.textColor = configuration.accentColor
+        amountOriginal.textColor = configuration.accentColor
+        amountLabel.text = getAmount()
         
         if let image = configuration.currencyPrefixImage {
             topContainer.insertArrangedSubview(currencyPrefixImage, at: 0)
@@ -185,7 +198,16 @@ extension CPXResearchSmallCard: CPXResearchCardProtocol {
             currencyPrefixImage.image = nil
         }
         
-        amountLabel.text = getAmount()
+        if let payoutOriginal = getOriginalAmount() {
+            let attributeString = NSMutableAttributedString(string: payoutOriginal)
+            attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 2, range: NSRange(location: 0, length: attributeString.length))
+            amountOriginal.attributedText = attributeString
+            amountLabel.textColor = configuration.promotionAmountColor
+        } else {
+            amountOriginal.attributedText = nil
+            amountLabel.textColor = configuration.accentColor
+        }
+        
         currencyLabel.text = configuration.hideCurrencyName ? nil : getCurrency()
         timeLabel.text = getEstimatedTime()
         ratingBar.setReviewStarsTo(getRating(),
@@ -195,7 +217,6 @@ extension CPXResearchSmallCard: CPXResearchCardProtocol {
                                    textColor: configuration.textColor,
                                    ratingAmount: configuration.hideRatingAmount ? nil : surveyItem.statisticsRatingCount)
         
-        amountLabel.textColor = configuration.accentColor
         currencyLabel.textColor = configuration.accentColor
         timeLabel.textColor = configuration.textColor
         timeSeparatorLabel.textColor = configuration.textColor

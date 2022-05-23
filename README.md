@@ -180,7 +180,7 @@ import CPXResearch
             .inactiveStarColor(UIColor(hex: "#dfdfdf")!)
             .textColor(.label)
             .dividerColor(UIColor(hex: "#5A7DFE")!) // (only for SMALL style)
-            .promotionAmountColor(.systemRed) // optional, text color of promotion offers, defaults to .systemRed (only for DEFAULT style)
+            .promotionAmountColor(.systemRed) // optional, text color of promotion offers, defaults to .systemRed
             .cardsOnScreen(4) // how many CPX Cards are visible at the same time, defaults to 3
             .maximumSurveys(4) // optional, maximum amount of CPX Cards that will be included in the CollectionView, default is Int.max to show a card for every survey
             .cornderRadius(4) // optional, defaults to 10
