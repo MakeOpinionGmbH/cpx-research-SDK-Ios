@@ -67,8 +67,14 @@ final public class CPXResearch: NSObject {
 
         NotificationCenter.default.addObserver(forName: UIDevice.orientationDidChangeNotification,
                                                object: nil,
-                                               queue: .main) { _ in
-            self.installBanner()
+                                               queue: .main) { [weak self] _ in
+            self?.installBanner()
+        }
+
+        NotificationCenter.default.addObserver(forName: UIApplication.willEnterForegroundNotification,
+                                               object: nil,
+                                               queue: .main) { [weak self] _ in
+            self?.requestSurveyUpdate(includeUnpaidTransactions: true)
         }
     }
 
@@ -178,13 +184,13 @@ final public class CPXResearch: NSObject {
         }
         webView.open(on: viewController,
                      for: url,
-                     buttons: [.help, .settings, .home, .close],
+                     buttons: [.help, .settings, .safari, .home, .close],
                      progressColor: color)
         delegate?.onSurveysDidOpen()
         self.delegates.allObjects.forEach({ $0.onSurveysDidOpen() })
     }
 
-    /// Show the given survey in a webview in a new viewcontroller presented modally.
+    /// Show the given survey in a webview in a new viewcontroller presented modally or opens the survey in Safari it is required to be opened externally.
     /// - Parameters:
     ///   - id: The survey id of the survey to show.
     ///   - viewController: The view controller that presents the survey modally.
@@ -195,18 +201,24 @@ final public class CPXResearch: NSObject {
               let color = UIColor(hex: config.style.backgroundColor)
         else { return }
 
-        let webView = CPXWebView(frame: .zero,
-                                 delegate: self)
-        webViewController = viewController
-        webView.onCloseAction = { [weak self] in
-            guard let self = self else { return }
-            self.delegate?.onSurveyDidClose()
-            self.delegates.allObjects.forEach({ $0.onSurveyDidClose() })
+        if let survey = surveys.first(where: { $0.id == id }),
+           survey.openSurveyExternally {
+            UIApplication.shared.open(url)
+        } else {
+            let webView = CPXWebView(frame: .zero,
+                                     delegate: self)
+            webViewController = viewController
+            webView.onCloseAction = { [weak self] in
+                guard let self = self else { return }
+                self.delegate?.onSurveyDidClose()
+                self.delegates.allObjects.forEach({ $0.onSurveyDidClose() })
+            }
+            webView.open(on: viewController,
+                         for: url,
+                         buttons: [.help, .settings, .safari, .close],
+                         progressColor: color)
         }
-        webView.open(on: viewController,
-                     for: url,
-                     buttons: [.help, .settings, .close],
-                     progressColor: color)
+
         delegate?.onSurveyDidOpen()
         self.delegates.allObjects.forEach({ $0.onSurveyDidOpen() })
     }
@@ -389,7 +401,12 @@ extension CPXResearch: WKNavigationDelegate, CPXWebViewDelegate {
         }
     }
 
-    func didClose(_ viewController: UIViewController) { }
+    func didClose(_ viewController: UIViewController) {
+        if let parentWebViewController = webViewController,
+           parentWebViewController == viewController {
+            webViewController = nil
+        }
+    }
 }
 
 /// Delegate to receive updates on surveys and unpaid transactions.

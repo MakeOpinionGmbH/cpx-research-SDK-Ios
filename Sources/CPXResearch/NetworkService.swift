@@ -22,6 +22,7 @@ final class NetworkService {
     func surveyUrl(_ config: CPXConfiguration, showSurvey surveyId: String? = nil) -> URL? {
         var queryItems = config.queryItems
         queryItems.append(URLQueryItem(name: Const.noClose, value: String(true)))
+
         if let surveyId = surveyId {
             queryItems.append(URLQueryItem(name: Const.surveyId, value: surveyId))
         }

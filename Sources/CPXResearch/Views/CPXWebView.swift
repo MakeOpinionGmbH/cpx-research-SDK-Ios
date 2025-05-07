@@ -27,6 +27,7 @@ final class CPXWebView: WKWebView {
         case info
         case settings
         case home
+        case safari
     }
 
     private var openedWithUrl: URL?
@@ -107,6 +108,9 @@ final class CPXWebView: WKWebView {
             case .home:
                 let homeIcon = createIcon(withImage: "icon_home", iconBackground: .lightGray, tag: .home)
                 menu.addArrangedSubview(homeIcon)
+            case .safari:
+                let safariIcon = createIcon(withImage: "safari", iconBackground: .lightGray, tag: .safari)
+                menu.addArrangedSubview(safariIcon)
             }
         }        
 
@@ -229,6 +233,10 @@ final class CPXWebView: WKWebView {
                 let request = URLRequest(url: url)
                 load(request)
             }
+        case .safari:
+            if let url = url {
+                UIApplication.shared.open(url)
+            }
         }
     }
 }
@@ -242,6 +250,12 @@ extension CPXWebView: WKUIDelegate, WKNavigationDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         if let url = navigationAction.request.url {
             supportSession.urls.append(url.absoluteString)
+        }
+
+        if let url = navigationAction.request.url,
+           url.absoluteString.lowercased().contains("open_external=true") && !url.absoluteString.lowercased().contains("offers.") {
+            UIApplication.shared.open(url)
+            return decisionHandler(.cancel)
         }
 
         if let delegate = delegate {

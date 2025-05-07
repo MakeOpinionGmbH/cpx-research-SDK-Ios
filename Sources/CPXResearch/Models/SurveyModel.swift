@@ -75,6 +75,7 @@ public final class SurveyItem: NSObject, Codable, Identifiable {
         case earnedAll = "earned_all"
         case additionalParameter = "additional_parameter"
         case payoutOriginal = "payout_original"
+        case openExternal = "open_external"
     }
 
     /// The id of the survey.
@@ -91,6 +92,9 @@ public final class SurveyItem: NSObject, Codable, Identifiable {
     @objc public let additionalParameter: Dictionary<String, String>?
     @objc public let payoutOriginal: String?
     @objc public var hasOfferPayout: Bool { payoutOriginal != nil && !payoutOriginal!.isEmpty }
+    public let openExternal: String?
+
+    @objc public var openSurveyExternally: Bool { openExternal == "1" }
 
     public static func ==(lhs: SurveyItem, rhs: SurveyItem) -> Bool {
         return lhs.id == rhs.id &&
@@ -103,6 +107,7 @@ public final class SurveyItem: NSObject, Codable, Identifiable {
         lhs.top == rhs.top &&
         lhs.details == rhs.details &&
         lhs.earnedAll == rhs.earnedAll &&
-        lhs.payoutOriginal == rhs.payoutOriginal
+        lhs.payoutOriginal == rhs.payoutOriginal &&
+        lhs.openExternal == rhs.openExternal
     }
 }
